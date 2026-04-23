@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BitBuddy - Dashboard</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#6366f1",
+                    "on-secondary-fixed": "#f1f9ff",
+                    "surface-container-high": "#e2e8f0",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f8fafc",
+                    "primary-container": "#38bdf8",
+                    "on-secondary-container": "#00394e",
+                    "on-primary-fixed": "#0c4a6e",
+                    "tertiary-container": "#818cf8",
+                    "tertiary-fixed": "#6366f1",
+                    "inverse-primary": "#bae6fd",
+                    "on-primary-fixed-variant": "#075985",
+                    "on-tertiary-fixed": "#1e1b4b",
+                    "error-container": "#fecaca",
+                    "error-dim": "#ef4444",
+                    "background": "#f8fafc",
+                    "on-surface-variant": "#64748b",
+                    "inverse-surface": "#0f172a",
+                    "error": "#dc2626",
+                    "surface-container-highest": "#cbd5e1",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e2e8f0",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#bae6fd",
+                    "tertiary-dim": "#4f46e5",
+                    "on-background": "#0f172a",
+                    "outline": "#94a3b8",
+                    "on-tertiary-container": "#ffffff",
+                    "primary": "#0ea5e9",
+                    "primary-dim": "#0284c7",
+                    "on-surface": "#0f172a",
+                    "primary-fixed": "#38bdf8",
+                    "on-primary-container": "#0c4a6e",
+                    "secondary-dim": "#0369a1",
+                    "secondary-fixed": "#7dd3fc",
+                    "inverse-on-surface": "#e2e8f0",
+                    "surface-tint": "#0ea5e9",
+                    "on-error-container": "#991b1b",
+                    "primary-fixed-dim": "#38bdf8",
+                    "surface-container": "#f1f5f9",
+                    "surface-bright": "#ffffff",
+                    "secondary": "#0284c7",
+                    "on-secondary-fixed-variant": "#075985",
+                    "on-tertiary-fixed-variant": "#312e81",
+                    "outline-variant": "#cbd5e1",
+                    "secondary-fixed-dim": "#7dd3fc",
+                    "tertiary": "#6366f1",
+                    "surface": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#e2e8f0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body antialiased overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-b border-slate-200/50 shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] bg-white/70 backdrop-blur-[25px] flex justify-between items-center px-8 h-20 max-w-none">
+<!-- Brand -->
+<div class="text-2xl font-extrabold tracking-tighter text-slate-900 font-inter tracking-tight antialiased">
+            BitBuddy
+        </div>
+<!-- Navigation Links (Hidden on Mobile) -->
+<ul class="hidden md:flex space-x-8">
+<li><a class="text-slate-500 hover:text-slate-900 transition-colors duration-300 font-inter tracking-tight antialiased hover:opacity-80 active:scale-95 transform" href="#">Услуги</a></li>
+<li><a class="text-slate-500 hover:text-slate-900 transition-colors duration-300 font-inter tracking-tight antialiased hover:opacity-80 active:scale-95 transform" href="#">О нас</a></li>
+<li><a class="text-slate-500 hover:text-slate-900 transition-colors duration-300 font-inter tracking-tight antialiased hover:opacity-80 active:scale-95 transform" href="#">Контакты</a></li>
+</ul>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-6">
+<button class="text-slate-500 hover:text-primary transition-colors duration-300 hover:opacity-80 active:scale-95 transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">light_mode</span>
+</button>
+<button class="bg-primary/10 text-[#0ea5e9] border border-[#0ea5e9]/30 px-6 py-2 rounded-full font-semibold tracking-wide hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(14,165,233,0.3)] transition-all duration-300 active:scale-95 font-inter">
+                Войти
+            </button>
+</div>
+</nav>
+<!-- Main Layout Grid -->
+<main class="flex-1 flex w-full pt-28 pb-12 px-6 lg:px-12 max-w-[1600px] mx-auto gap-8 relative">
+<!-- Background Orbs -->
+<div class="absolute top-20 -left-40 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-40 -right-20 w-[400px] h-[400px] bg-secondary-dim/5 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Sidebar (Glass Panel) -->
+<aside class="hidden lg:flex flex-col w-72 bg-white/50 backdrop-blur-[25px] border border-slate-200/50 rounded-3xl p-6 h-[calc(100vh-160px)] sticky top-28 shrink-0">
+<!-- User Avatar & Info -->
+<div class="flex flex-col items-center mb-10 mt-4">
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary-dim rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500"></div>
+<img alt="User Avatar" class="relative w-24 h-24 rounded-full object-cover border-2 border-white bg-white" data-alt="portrait of a young man with glasses and neutral expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCuTrtH64bzmZuzgAM032eu0LTmQP6XFRuNWS59826hBiXN01Y18jrDHBKasdb3KlTLKYBGj2uQhaNg-iqaHV_jTX6lsoiDhCG4jV6GB_Xd-HbjLvWddoofSmC0pwwX-n7lUUgMfiEitPkex9PmOKev8-vdfGWz_7WeAsTFZwW6KLDkRuSTRuRnJVtM2G4WBSBwYel0tWdScSfz6_cVAiihvd0J4w49-GG9VkKL7hW-CO6Sh7YuYNqVNhiTHDZ57iUCkLsHFv4Nw9Z"/>
+</div>
+<h3 class="mt-4 font-bold text-lg text-slate-900">Алексей К.</h3>
+<p class="text-sm text-on-surface-variant">Premium Member</p>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl bg-primary/10 text-primary border border-primary/20 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Дашборд
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-slate-900 hover:bg-slate-100 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">history</span>
+                    История заказов
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-slate-900 hover:bg-slate-100 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    Настройки
+                </a>
+</nav>
+<!-- Bottom Action -->
+<div class="mt-auto">
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-error-dim hover:text-error hover:bg-red-50 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+                    Выйти
+                </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col gap-10 min-w-0">
+<!-- Header -->
+<header>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-500">
+                    Добро пожаловать, Алексей
+                </h1>
+<p class="mt-2 text-on-surface-variant text-lg">Обзор вашей активности в The Ethereal Exchange.</p>
+</header>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Stat Card 1 -->
+<div class="bg-white/60 backdrop-blur-[25px] border border-slate-200/50 rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] hover:bg-white transition-all duration-300">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="text-on-surface-variant font-medium text-sm">Всего потрачено</div>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2 relative z-10">
+<span class="text-3xl font-bold text-slate-900">$4,250</span>
+<span class="text-primary text-sm font-medium">.00</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white/60 backdrop-blur-[25px] border border-slate-200/50 rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] hover:bg-white transition-all duration-300">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-secondary/20 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="text-on-surface-variant font-medium text-sm">Активные заказы</div>
+<span class="material-symbols-outlined text-secondary">autorenew</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2 relative z-10">
+<span class="text-3xl font-bold text-slate-900">3</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-white/60 backdrop-blur-[25px] border border-slate-200/50 rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] hover:bg-white transition-all duration-300">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-tertiary/20 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="text-on-surface-variant font-medium text-sm">Всего заказов</div>
+<span class="material-symbols-outlined text-tertiary">inventory_2</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2 relative z-10">
+<span class="text-3xl font-bold text-slate-900">28</span>
+</div>
+</div>
+</div>
+<!-- Orders Table Section -->
+<section class="flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h2 class="text-2xl font-bold text-slate-900 tracking-tight">Недавние транзакции</h2>
+<button class="text-primary text-sm font-medium hover:text-slate-900 transition-colors">Смотреть все</button>
+</div>
+<div class="bg-slate-50/80 backdrop-blur-[25px] border border-slate-200/50 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-100/50 border-b border-slate-200">
+<th class="px-6 py-5 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">ID Заказа</th>
+<th class="px-6 py-5 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Услуга</th>
+<th class="px-6 py-5 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Цена</th>
+<th class="px-6 py-5 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Статус</th>
+<th class="px-6 py-5 text-xs font-semibold text-on-surface-variant uppercase tracking-wider text-right">Дата</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-100/50 transition-colors duration-200 group">
+<td class="px-6 py-5 text-sm font-medium text-slate-900">#ETH-8901</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant group-hover:text-slate-900 transition-colors">Quantum Render Core</td>
+<td class="px-6 py-5 text-sm font-bold text-primary">$850.00</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-tertiary-container/20 text-tertiary border border-tertiary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+                                            Ожидает
+                                        </span>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant text-right">24 Окт, 2024</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-100/50 transition-colors duration-200 group">
+<td class="px-6 py-5 text-sm font-medium text-slate-900">#ETH-8895</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant group-hover:text-slate-900 transition-colors">Neural Net Audit</td>
+<td class="px-6 py-5 text-sm font-bold text-primary">$1,200.00</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#0ea5e9]"></span>
+                                            Активен
+                                        </span>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant text-right">21 Окт, 2024</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-100/50 transition-colors duration-200 group">
+<td class="px-6 py-5 text-sm font-medium text-slate-900">#ETH-8842</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant group-hover:text-slate-900 transition-colors">Data Synthesis Protocol</td>
+<td class="px-6 py-5 text-sm font-bold text-primary">$450.00</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 border border-slate-300">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                            Завершен
+                                        </span>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant text-right">15 Окт, 2024</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full relative bottom-0 border-t border-[#0ea5e9]/20 shadow-[0_-4px_20px_rgba(14,165,233,0.05)] bg-white max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-between items-center gap-8 font-inter text-sm tracking-wide z-10">
+<!-- Brand / Copyright -->
+<div class="flex flex-col md:flex-row items-center gap-6">
+<span class="text-xl font-black text-slate-900 tracking-tighter">BitBuddy</span>
+<span class="text-slate-400">© 2024 BitBuddy. The Ethereal Exchange.</span>
+</div>
+<!-- Links -->
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] rounded" href="#">Услуги</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] rounded" href="#">О нас</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] rounded" href="#">Контакты</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] rounded" href="#">Политика конфиденциальности</a>
+</div>
+</footer>
+</body></html>

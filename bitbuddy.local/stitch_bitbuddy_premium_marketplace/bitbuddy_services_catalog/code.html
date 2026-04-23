@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BitBuddy - Каталог Услуг</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#819fff",
+                        "on-secondary-fixed": "#00394e",
+                        "surface-container-high": "#201f1f",
+                        "on-tertiary": "#00236d",
+                        "surface-container-low": "#131313",
+                        "primary-container": "#00cffc",
+                        "on-secondary-container": "#f1f9ff",
+                        "on-primary-fixed": "#002a35",
+                        "tertiary-container": "#7696fd",
+                        "tertiary-fixed": "#95adff",
+                        "inverse-primary": "#006880",
+                        "on-primary-fixed-variant": "#004a5c",
+                        "on-tertiary-fixed": "#001345",
+                        "error-container": "#9f0519",
+                        "error-dim": "#d7383b",
+                        "background": "#0e0e0e",
+                        "on-surface-variant": "#adaaaa",
+                        "inverse-surface": "#fcf8f8",
+                        "error": "#ff716c",
+                        "surface-container-highest": "#262626",
+                        "on-secondary": "#00374c",
+                        "surface-variant": "#262626",
+                        "surface-container-lowest": "#000000",
+                        "on-error": "#490006",
+                        "secondary-container": "#006688",
+                        "tertiary-dim": "#7999ff",
+                        "on-background": "#ffffff",
+                        "outline": "#777575",
+                        "on-tertiary-container": "#001851",
+                        "primary": "#69daff",
+                        "primary-dim": "#00c0ea",
+                        "on-surface": "#ffffff",
+                        "primary-fixed": "#00cffc",
+                        "on-primary-container": "#004050",
+                        "secondary-dim": "#00b2ec",
+                        "secondary-fixed": "#98daff",
+                        "inverse-on-surface": "#565554",
+                        "surface-tint": "#69daff",
+                        "on-error-container": "#ffa8a3",
+                        "primary-fixed-dim": "#00c0ea",
+                        "surface-container": "#1a1919",
+                        "surface-bright": "#2c2c2c",
+                        "secondary": "#17c0fd",
+                        "on-secondary-fixed-variant": "#005775",
+                        "on-tertiary-fixed-variant": "#00318e",
+                        "outline-variant": "#494847",
+                        "secondary-fixed-dim": "#6ecfff",
+                        "tertiary": "#89a5ff",
+                        "surface": "#0e0e0e",
+                        "on-primary": "#004a5d",
+                        "surface-dim": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Glowing Orbs (Ambient Background) -->
+<div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-primary/10 blur-[120px] mix-blend-screen"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-secondary-dim/5 blur-[150px] mix-blend-screen"></div>
+</div>
+<!-- TopNavBar Shared Component -->
+<nav class="fixed top-0 w-full z-50 bg-neutral-950/60 backdrop-blur-[25px] border-b border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] font-inter tracking-tight antialiased transition-all duration-300">
+<div class="flex justify-between items-center px-8 h-20 w-full max-w-none mx-auto relative z-10">
+<!-- Brand -->
+<a class="text-2xl font-extrabold tracking-tighter text-white hover:opacity-80 transition-all duration-300" href="#">BitBuddy</a>
+<!-- Navigation Links (Web) -->
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-[#69daff] font-semibold border-b-2 border-[#69daff] pb-1 hover:opacity-80 transition-all duration-300" href="#">Услуги</a>
+<a class="text-neutral-400 hover:text-white transition-colors duration-300 hover:opacity-80 transition-all duration-300" href="#">О нас</a>
+<a class="text-neutral-400 hover:text-white transition-colors duration-300 hover:opacity-80 transition-all duration-300" href="#">Контакты</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center space-x-6">
+<button aria-label="Toggle Dark Mode" class="text-neutral-400 hover:text-white transition-colors duration-300 hover:opacity-80 transition-all duration-300 active:scale-95 transform transition-transform">
+<span class="material-symbols-outlined text-xl">dark_mode</span>
+</button>
+<button class="hidden md:flex items-center justify-center px-6 py-2 rounded-full bg-surface-variant backdrop-blur-[25px] border border-outline-variant/15 text-primary hover:bg-primary hover:text-on-primary hover:shadow-[0_0_20px_rgba(105,218,255,0.4)] transition-all duration-300 active:scale-95 transform font-medium">
+                    Войти
+                </button>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-white hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="relative z-10 pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-[1600px] mx-auto min-h-screen flex flex-col gap-16">
+<!-- Hero Header -->
+<header class="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
+<h1 class="text-5xl md:text-6xl font-headline font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container leading-tight">
+                Каталог Услуг
+            </h1>
+<p class="text-lg md:text-xl text-on-surface-variant font-light max-w-2xl leading-relaxed">
+                Выбирайте из кураторского списка высококачественных цифровых решений, созданных для ускорения вашего бизнеса.
+            </p>
+</header>
+<!-- Filters (Pills) -->
+<section class="flex flex-wrap justify-center gap-4 w-full">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-medium tracking-wide shadow-[0_0_20px_rgba(105,218,255,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 border border-primary">Все</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant/50 backdrop-blur-md text-on-surface-variant font-medium tracking-wide border border-outline-variant/15 hover:bg-surface-variant hover:text-white hover:border-outline-variant/30 transition-all duration-300 hover:scale-105 active:scale-95">Дизайн</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant/50 backdrop-blur-md text-on-surface-variant font-medium tracking-wide border border-outline-variant/15 hover:bg-surface-variant hover:text-white hover:border-outline-variant/30 transition-all duration-300 hover:scale-105 active:scale-95">Разработка</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant/50 backdrop-blur-md text-on-surface-variant font-medium tracking-wide border border-outline-variant/15 hover:bg-surface-variant hover:text-white hover:border-outline-variant/30 transition-all duration-300 hover:scale-105 active:scale-95">IT-поддержка</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant/50 backdrop-blur-md text-on-surface-variant font-medium tracking-wide border border-outline-variant/15 hover:bg-surface-variant hover:text-white hover:border-outline-variant/30 transition-all duration-300 hover:scale-105 active:scale-95">Видео</button>
+</section>
+<!-- Services Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative w-full">
+<!-- Card 1 (Popular) -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="absolute top-6 right-6 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-1.5 shadow-[0_0_15px_rgba(105,218,255,0.15)]">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Популярное</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 border border-primary/20 group-hover:bg-primary/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings: 'FILL' 1;">design_services</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">UX/UI Дизайн Приложений</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Полный цикл проектирования интерфейсов. От wireframes до интерактивных прототипов с фонусом на конверсию.
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">От</span>
+<span class="text-2xl font-headline font-bold text-primary">₽45,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="w-16 h-16 rounded-full bg-secondary-dim/10 flex items-center justify-center mb-8 border border-secondary-dim/20 group-hover:bg-secondary-dim/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-secondary-dim" style="font-variation-settings: 'FILL' 1;">code_blocks</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">Разработка Web-приложений</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Создание масштабируемых веб-сервисов на современных стеках технологий (React, Node.js, Python).
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">От</span>
+<span class="text-2xl font-headline font-bold text-primary">₽80,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="w-16 h-16 rounded-full bg-tertiary-dim/10 flex items-center justify-center mb-8 border border-tertiary-dim/20 group-hover:bg-tertiary-dim/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-tertiary-dim" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">Комплексная IT-поддержка</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Круглосуточный мониторинг инфраструктуры, решение инцидентов и оптимизация серверных мощностей.
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Месяц</span>
+<span class="text-2xl font-headline font-bold text-primary">₽25,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+<!-- Card 4 (Popular) -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="absolute top-6 right-6 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-1.5 shadow-[0_0_15px_rgba(105,218,255,0.15)]">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Популярное</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 border border-primary/20 group-hover:bg-primary/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings: 'FILL' 1;">movie_creation</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">Продакшн Видеороликов</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Создание промо-видео, корпоративных фильмов и анимационных эксплейнеров под ключ.
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">От</span>
+<span class="text-2xl font-headline font-bold text-primary">₽60,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="w-16 h-16 rounded-full bg-secondary-dim/10 flex items-center justify-center mb-8 border border-secondary-dim/20 group-hover:bg-secondary-dim/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-secondary-dim" style="font-variation-settings: 'FILL' 1;">branding_watermark</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">Айдентика и Брендинг</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Разработка логотипов, брендбуков и визуального языка для выделения вашей компании на рынке.
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Проект</span>
+<span class="text-2xl font-headline font-bold text-primary">₽50,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="group relative flex flex-col p-8 rounded-2xl bg-surface-container-high/80 backdrop-blur-xl border border-outline-variant/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_60px_-15px_rgba(105,218,255,0.1)] hover:scale-[1.02] hover:bg-surface-container-high transition-all duration-500 ease-out flex-1 min-h-[400px]">
+<div class="w-16 h-16 rounded-full bg-tertiary-dim/10 flex items-center justify-center mb-8 border border-tertiary-dim/20 group-hover:bg-tertiary-dim/20 transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl text-tertiary-dim" style="font-variation-settings: 'FILL' 1;">developer_mode</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-3 tracking-tight">Мобильная Разработка</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                    Нативные и кроссплатформенные приложения (iOS, Android) с интеграцией сложных API.
+                </p>
+<div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">От</span>
+<span class="text-2xl font-headline font-bold text-primary">₽120,000</span>
+</div>
+<button class="px-5 py-2.5 rounded-full bg-surface-variant backdrop-blur-md text-white text-sm font-medium border border-outline-variant/15 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(105,218,255,0.2)]">
+                        Подробнее
+                    </button>
+</div>
+</article>
+</section>
+<!-- Load More / CTA -->
+<div class="flex justify-center pt-8">
+<button class="flex items-center gap-2 px-8 py-4 rounded-full bg-surface-variant/30 backdrop-blur-[25px] border border-outline-variant/20 text-on-surface hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(105,218,255,0.1)]">
+<span class="font-medium tracking-wide">Загрузить еще</span>
+<span class="material-symbols-outlined text-xl">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Footer Shared Component -->
+<footer class="w-full relative bottom-0 bg-[#0e0e0e] border-t border-[#69daff]/30 shadow-[0_-10px_40px_rgba(105,218,255,0.05)] font-inter text-sm tracking-wide z-20">
+<div class="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col items-center md:items-start gap-4">
+<span class="text-xl font-black text-white tracking-tighter">BitBuddy</span>
+<span class="text-neutral-500">© 2024 BitBuddy. The Ethereal Exchange.</span>
+</div>
+<nav class="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-4">
+<a class="text-[#69daff] underline underline-offset-4 hover:text-white hover:drop-shadow-[0_0_8px_#69daff] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#69daff] rounded" href="#">Услуги</a>
+<a class="text-neutral-500 hover:text-[#69daff] hover:text-white hover:drop-shadow-[0_0_8px_#69daff] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#69daff] rounded" href="#">О нас</a>
+<a class="text-neutral-500 hover:text-[#69daff] hover:text-white hover:drop-shadow-[0_0_8px_#69daff] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#69daff] rounded" href="#">Контакты</a>
+<a class="text-neutral-500 hover:text-[#69daff] hover:text-white hover:drop-shadow-[0_0_8px_#69daff] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#69daff] rounded" href="#">Политика конфиденциальности</a>
+</nav>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BitBuddy - Service Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#6366f1",
+                        "on-secondary-fixed": "#f1f9ff",
+                        "surface-container-high": "#e2e8f0",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f8fafc",
+                        "primary-container": "#38bdf8",
+                        "on-secondary-container": "#00394e",
+                        "on-primary-fixed": "#0c4a6e",
+                        "tertiary-container": "#818cf8",
+                        "tertiary-fixed": "#6366f1",
+                        "inverse-primary": "#bae6fd",
+                        "on-primary-fixed-variant": "#075985",
+                        "on-tertiary-fixed": "#1e1b4b",
+                        "error-container": "#fecaca",
+                        "error-dim": "#ef4444",
+                        "background": "#f8fafc",
+                        "on-surface-variant": "#64748b",
+                        "inverse-surface": "#0f172a",
+                        "error": "#dc2626",
+                        "surface-container-highest": "#cbd5e1",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e2e8f0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#bae6fd",
+                        "tertiary-dim": "#4f46e5",
+                        "on-background": "#0f172a",
+                        "outline": "#94a3b8",
+                        "on-tertiary-container": "#ffffff",
+                        "primary": "#0ea5e9",
+                        "primary-dim": "#0284c7",
+                        "on-surface": "#0f172a",
+                        "primary-fixed": "#38bdf8",
+                        "on-primary-container": "#0c4a6e",
+                        "secondary-dim": "#0369a1",
+                        "secondary-fixed": "#7dd3fc",
+                        "inverse-on-surface": "#e2e8f0",
+                        "surface-tint": "#0ea5e9",
+                        "on-error-container": "#991b1b",
+                        "primary-fixed-dim": "#38bdf8",
+                        "surface-container": "#f1f5f9",
+                        "surface-bright": "#ffffff",
+                        "secondary": "#0284c7",
+                        "on-secondary-fixed-variant": "#075985",
+                        "on-tertiary-fixed-variant": "#312e81",
+                        "outline-variant": "#cbd5e1",
+                        "secondary-fixed-dim": "#7dd3fc",
+                        "tertiary": "#6366f1",
+                        "surface": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#e2e8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); }
+        .ghost-border { border: 1px solid rgba(203, 213, 225, 0.3); }
+        .glow-hover:hover { box-shadow: 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-2px); }
+        .ambient-glow { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.08; z-index: -1; pointer-events: none; }
+        .ethereal-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-x-hidden relative">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-b border-slate-200/50 shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] bg-white/70 backdrop-blur-[25px]">
+<div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
+<div class="text-2xl font-extrabold tracking-tighter text-slate-900">
+                BitBuddy
+            </div>
+<div class="hidden md:flex gap-8 items-center font-inter tracking-tight antialiased">
+<a class="text-[#0ea5e9] font-semibold border-b-2 border-[#0ea5e9] pb-1" href="#">Услуги</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-300" href="#">О нас</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-300" href="#">Контакты</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-slate-500 hover:text-slate-900 transition-colors duration-300 active:scale-95 transform transition-transform">
+<span class="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+</button>
+<button class="text-[#0ea5e9] font-semibold hover:opacity-80 transition-all duration-300 active:scale-95 transform transition-transform">
+                    Войти
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-32 pb-24 relative z-10">
+<!-- Ambient Background Orbs -->
+<div class="ambient-glow bg-primary w-[600px] h-[600px] top-[-100px] left-[-200px]"></div>
+<div class="ambient-glow bg-secondary-dim w-[800px] h-[800px] bottom-[200px] right-[-300px] opacity-[0.05]"></div>
+<div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+<!-- Hero / Details Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32 items-start">
+<!-- Left: Title & Imagery -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel ghost-border w-max">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="code">code</span>
+<span class="text-on-surface-variant text-sm font-medium tracking-wide uppercase">Разработка</span>
+</div>
+<h1 class="text-5xl md:text-[64px] font-[800] leading-[1.1] tracking-[-0.02em] text-on-surface">
+                        Создание смарт-контрактов <br/>
+<span class="ethereal-gradient">на Solidity</span>
+</h1>
+<div class="w-full h-[400px] rounded-xl overflow-hidden glass-panel ghost-border relative group mt-4">
+<img alt="Service preview" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" data-alt="Abstract glowing code interface with deep neon blue and purple hues on a dark glass screen, highly detailed, cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs_4xYdzFuN8kif3X-r-KbJTClkL1Miwp6U7Pcepji3TcqfPthPbq33XoEkK1rMrmLCRglexEIB-8G6KqzhdiTcOxVUsy-9Bq5kqBdEjrxa7JMdvwWmfFoks0tGT2lDKnhnOVHz0bPokjXQQDmdw7YeG8yJbbcfIhuzMUhMn_AVPDdnVUkaRqJ-Kf8hzT8fyjXTzSu8StXA3huoTQCyxQNaUKFFaIJmzra5ij_n7sJ_4eBTKMbYfHFa6E0FYfSR93atArXkO3peb6i"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+</div>
+</div>
+<!-- Right: Booking Pane -->
+<div class="lg:col-span-5 sticky top-32">
+<div class="glass-panel ghost-border rounded-2xl p-8 md:p-10 flex flex-col gap-8 relative overflow-hidden shadow-[0_20px_60px_rgba(14,165,233,0.06)] transition-all duration-500 hover:shadow-[0_30px_80px_rgba(14,165,233,0.1)]">
+<!-- Inner Orb for depth -->
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-10 pointer-events-none"></div>
+<div>
+<div class="text-primary text-[28px] font-bold tracking-tight mb-2">от 500 USDT</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                                Полный цикл разработки, аудита и деплоя безопасных смарт-контрактов для DeFi, NFT и DAO проектов.
+                            </p>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-3 border-b border-slate-200">
+<span class="text-on-surface-variant text-sm">Срок выполнения</span>
+<span class="text-on-surface font-medium">от 14 дней</span>
+</div>
+<div class="flex justify-between items-center py-3 border-b border-slate-200">
+<span class="text-on-surface-variant text-sm">Аудит включен</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex justify-between items-center py-3 border-b border-slate-200">
+<span class="text-on-surface-variant text-sm">Поддержка</span>
+<span class="text-on-surface font-medium">30 дней</span>
+</div>
+</div>
+<button class="w-full py-4 rounded-lg bg-primary text-white font-bold tracking-wide transition-all duration-300 glow-hover relative overflow-hidden group mt-4">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Заказать сейчас
+                                <span class="material-symbols-outlined text-xl" data-icon="arrow_forward">arrow_forward</span>
+</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Similar Services -->
+<div class="pt-16 border-t border-slate-200">
+<div class="flex justify-between items-end mb-12">
+<h2 class="text-3xl font-bold tracking-tight text-on-surface">Похожие услуги</h2>
+<a class="text-primary text-sm font-medium hover:text-slate-900 transition-colors duration-300 flex items-center gap-1" href="#">
+                        Смотреть все
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="glass-panel ghost-border rounded-xl overflow-hidden group hover:scale-[1.02] transition-transform duration-500 cursor-pointer flex flex-col h-full bg-white/50">
+<div class="h-48 relative overflow-hidden">
+<img alt="Audit" class="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-500" data-alt="Digital security lock hologram floating in dark space with blue and teal neon lighting, cyber security concept" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdgLNCb3qFn_csMKuWgQ2ftdxXunsAqZ23stcTF9ZB58j5i6LOx_Qm5Zjqj7vz7QdmWokqNErtxX0zLjzGnh4ii20WGdS-cCsWvEpiytst4Skfe-p1OUr1srgP5UjzZrkBQjNSBZMELOSv5Gxg_K4U3l5WTPWnnWRLrHqJdcPwnDXimiDs92akK8kyVzjVxuir2NTjZ5lEJSP0JxYCJDJcZDdBzl8y5meJ2dTUEvzEhzP2HWf7xoSYstWcUm9XQ3ImgNrnMVVG14v_"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow relative">
+<div class="text-primary text-xl font-bold mb-3 absolute -top-14 right-6 glass-panel px-3 py-1 rounded-md ghost-border shadow-lg">150 USDT</div>
+<h3 class="text-lg font-bold text-on-surface mb-2 mt-2 leading-tight">Аудит безопасности контрактов</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-grow">Детальный анализ кода на наличие уязвимостей и логических ошибок.</p>
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+                                3-5 дней
+                            </div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel ghost-border rounded-xl overflow-hidden group hover:scale-[1.02] transition-transform duration-500 cursor-pointer flex flex-col h-full bg-white/50">
+<div class="h-48 relative overflow-hidden">
+<img alt="Web3 UI" class="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-500" data-alt="Futuristic holographic user interface floating over a dark surface with glowing cyan elements, high tech abstract design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSxDMuNKTy3N6TD10uUmxGIY9TJ9ibsT3Rri7CV0Em7oFCKHYLzGdt5fu_l2ljsaf-GgkRehD--I4Wt7Z4H9v7v3WYuT8CChahJwbcGZfM4EE78MQ3jW_66m6FHDH_U5BtibtuVHqUoewPqUxfZPcQZiLzjmwQoMFMegAMclCSSJr3diFGe8i3Die77yVYRVqVJV51rhuZVsPuFWjqj1Hucu0ern1g7XzDENerPDdTHRZScOVYk9X6QgZdbS1HsR2XOPyaZt6d8iNv"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow relative">
+<div class="text-primary text-xl font-bold mb-3 absolute -top-14 right-6 glass-panel px-3 py-1 rounded-md ghost-border shadow-lg">300 USDT</div>
+<h3 class="text-lg font-bold text-on-surface mb-2 mt-2 leading-tight">Web3 Frontend интеграция</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-grow">Подключение React/Next.js приложения к блокчейну (ethers.js/web3.js).</p>
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+                                от 7 дней
+                            </div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel ghost-border rounded-xl overflow-hidden group hover:scale-[1.02] transition-transform duration-500 cursor-pointer flex flex-col h-full bg-white/50">
+<div class="h-48 relative overflow-hidden">
+<img alt="Bot" class="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-500" data-alt="Abstract visualization of automated trading algorithms with intersecting neon blue lines on black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7-7xwjxrvDz1EEZxcY0Vim6Tc8Kbq51ZMCPe9Ya_haYBaKpuZzmNhB_DnmbTX31nl90guLW6O772MHK41qCZybz0QT6KoFPWP_jTo2jhXyE3N8iipYySC05TMzFPTpXxTUS1qU53lBjPo_rAcuINFavu-24mcVhnFrFROeo3aSM8nUL9UgayF2FOP78SWTz-yiPgRs9nlg6TWaQWJXyim3e-8pTPTlFUHGQ5pP87B-qmrmtQr2GXF5DjMkAVrGXOFT9Kt5HllELxf"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow relative">
+<div class="text-primary text-xl font-bold mb-3 absolute -top-14 right-6 glass-panel px-3 py-1 rounded-md ghost-border shadow-lg">800 USDT</div>
+<h3 class="text-lg font-bold text-on-surface mb-2 mt-2 leading-tight">Торговые боты (DEX)</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-grow">Разработка арбитражных и снайпер ботов для Uniswap, PancakeSwap.</p>
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+                                от 21 дня
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full relative bottom-0 border-t border-[#0ea5e9]/20 shadow-[0_-4px_20px_rgba(14,165,233,0.05)] bg-white z-20">
+<div class="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-between items-center gap-8 font-inter text-sm tracking-wide">
+<div class="text-xl font-black text-slate-900 tracking-tighter">
+                BitBuddy
+            </div>
+<div class="flex flex-wrap justify-center gap-6 md:gap-8">
+<a class="text-[#0ea5e9] underline underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]" href="#">Услуги</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]" href="#">О нас</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]" href="#">Контакты</a>
+<a class="text-slate-500 hover:text-[#0ea5e9] transition-colors duration-300 hover:text-slate-900 hover:drop-shadow-[0_0_8px_#0ea5e9] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]" href="#">Политика конфиденциальности</a>
+</div>
+<div class="text-slate-500">
+                © 2024 BitBuddy. The Ethereal Exchange.
+            </div>
+</div>
+</footer>
+</body></html>

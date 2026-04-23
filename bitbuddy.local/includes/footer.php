@@ -5,8 +5,8 @@
  */
 $active_page = $active_page ?? null;
 
-function bb_footer_link_classes(string $current, string $self): string {
-    if ($current === $self) {
+function bb_footer_link_classes(?string $current, ?string $self): string {
+    if ($current !== null && $current === $self) {
         return 'text-primary underline underline-offset-4 decoration-primary/40 hover:decoration-primary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 rounded';
     }
     return 'text-on-surface-variant hover:text-primary transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 rounded';
@@ -22,7 +22,7 @@ function bb_footer_link_classes(string $current, string $self): string {
             <a class="<?php echo bb_footer_link_classes($active_page, 'services'); ?>" href="services.php">Услуги</a>
             <a class="<?php echo bb_footer_link_classes($active_page, 'home'); ?>" href="index.php">О нас</a>
             <a class="<?php echo bb_footer_link_classes($active_page, 'contacts'); ?>" href="contacts.php">Контакты</a>
-            <a class="<?php echo bb_footer_link_classes($active_page, null); ?>" href="#">Политика конфиденциальности</a>
+            <a class="<?php echo bb_footer_link_classes($active_page, 'privacy'); ?>" href="privacy.php">Политика конфиденциальности</a>
         </nav>
     </div>
 </footer>

@@ -80,7 +80,7 @@ $active_page   = 'home';
                         ['icon' => 'security',         'title' => 'Кибербезопасность', 'desc' => 'Аудит и защита вашей инфраструктуры по высочайшим стандартам безопасности.',      'price' => 'от $2k'],
                     ];
                     foreach ($services_preview as $s): ?>
-                        <div class="card-animate glass-panel p-8 rounded-2xl bg-surface-container-high/80 hover:scale-[1.02] hover:shadow-glow-primary transition-all duration-300 group flex flex-col min-h-[380px]">
+                        <div class="card-animate glass-panel p-8 rounded-2xl hover:-translate-y-1 hover:shadow-glow-primary transition-all duration-300 group flex flex-col min-h-[380px]">
                             <div class="mb-auto">
                                 <span class="material-symbols-outlined text-4xl text-primary mb-6 block" style="font-variation-settings: 'FILL' 1;"><?php echo $s['icon']; ?></span>
                                 <h3 class="text-2xl font-bold text-on-surface mb-3"><?php echo $s['title']; ?></h3>

@@ -96,6 +96,11 @@ $active_page = 'services';
             <?php endforeach; ?>
         </section>
 
+        <div id="empty-state" class="hidden text-center py-16 text-on-surface-variant">
+            <span class="material-symbols-outlined text-5xl text-on-surface-variant/40 mb-4 block">search_off</span>
+            <p class="text-lg">В этой категории пока нет услуг.</p>
+        </div>
+
         <div id="load-more-wrap" class="flex justify-center pt-8">
             <button id="load-more-btn" class="flex items-center gap-2 px-8 py-4 rounded-full bg-surface-variant/40 backdrop-blur-[25px] border border-outline-variant/25 text-on-surface hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-glow-primary">
                 <span class="font-medium tracking-wide">Загрузить ещё</span>
@@ -112,6 +117,7 @@ $active_page = 'services';
         var cards      = document.querySelectorAll('.service-card');
         var loadBtn    = document.getElementById('load-more-btn');
         var loadWrap   = document.getElementById('load-more-wrap');
+        var emptyState = document.getElementById('empty-state');
         var VISIBLE    = 6;
         var filter     = 'all';
         var shown      = VISIBLE;
@@ -122,16 +128,17 @@ $active_page = 'services';
         }
 
         function update() {
+            cards.forEach(function (card) { card.style.display = 'none'; });
             var list = getFiltered();
             list.forEach(function (card, i) {
                 if (i < shown) {
                     card.style.display = '';
                     card.classList.add('visible');
-                } else {
-                    card.style.display = 'none';
                 }
             });
             if (loadWrap) loadWrap.style.display = list.length > shown ? '' : 'none';
+            if (list.length === 0 && emptyState) emptyState.classList.remove('hidden');
+            else if (emptyState) emptyState.classList.add('hidden');
         }
 
         filterBtns.forEach(function (btn) {

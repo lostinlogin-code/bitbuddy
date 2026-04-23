@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'db_connect.php';
+require_once __DIR__ . '/includes/service_images.php';
 
 $is_logged_in = isset($_SESSION['user_id']);
 $username     = $_SESSION['username'] ?? '';
@@ -36,6 +37,7 @@ $cat_icons = [
     'video'       => 'movie_creation',
 ];
 $icon = $cat_icons[$service['category_slug']] ?? 'design_services';
+$cover_image = bb_service_image_url($service);
 
 $page_title  = 'BitBuddy — ' . $service['title'];
 $active_page = 'services';
@@ -64,11 +66,14 @@ $active_page = 'services';
                     <h1 class="text-5xl md:text-[64px] font-extrabold leading-[1.1] tracking-[-0.02em] text-on-surface">
                         <?php echo htmlspecialchars($service['title']); ?>
                     </h1>
-                    <div class="w-full h-[400px] rounded-xl overflow-hidden glass-panel ghost-border relative group mt-4">
-                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 via-transparent to-tertiary-dim/10">
-                            <span class="material-symbols-outlined text-[160px] text-primary/30 group-hover:scale-110 transition-transform duration-700"><?php echo $icon; ?></span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+                    <div class="w-full h-[400px] rounded-xl overflow-hidden glass-panel ghost-border relative group mt-4 bg-gradient-to-br from-primary/10 via-transparent to-tertiary-dim/10">
+                        <span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[160px] text-primary/30 pointer-events-none select-none" aria-hidden="true"><?php echo $icon; ?></span>
+                        <?php if ($cover_image): ?>
+                            <img src="<?php echo htmlspecialchars($cover_image); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" loading="lazy"
+                                 onerror="this.style.display='none'"
+                                 class="relative w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"/>
+                        <?php endif; ?>
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent"></div>
                     </div>
                 </div>
 
@@ -117,13 +122,19 @@ $active_page = 'services';
                         </a>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <?php foreach ($related_services as $rel): ?>
+                        <?php foreach ($related_services as $rel):
+                            $rel_img  = bb_service_image_url($rel);
+                            $rel_icon = $cat_icons[$rel['category_slug']] ?? 'design_services';
+                        ?>
                             <a href="service.php?id=<?php echo $rel['id']; ?>" class="card-animate glass-panel ghost-border rounded-xl overflow-hidden group hover:-translate-y-1 hover:shadow-glow-primary transition-all duration-500 cursor-pointer flex flex-col h-full bg-surface-container-high/60">
-                                <div class="h-48 relative overflow-hidden bg-surface-variant/30">
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-6xl text-on-surface-variant/30 group-hover:text-primary/60 group-hover:scale-110 transition-all duration-500"><?php echo $cat_icons[$rel['category_slug']] ?? 'design_services'; ?></span>
-                                    </div>
-                                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-high/90 to-transparent"></div>
+                                <div class="h-48 relative overflow-hidden bg-gradient-to-br from-primary/15 via-surface to-tertiary-dim/15">
+                                    <span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-6xl text-primary/30 pointer-events-none select-none" aria-hidden="true"><?php echo $rel_icon; ?></span>
+                                    <?php if ($rel_img): ?>
+                                        <img src="<?php echo htmlspecialchars($rel_img); ?>" alt="<?php echo htmlspecialchars($rel['title']); ?>" loading="lazy"
+                                             onerror="this.style.display='none'"
+                                             class="relative w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                                    <?php endif; ?>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-high/90 via-surface-container-high/20 to-transparent"></div>
                                 </div>
                                 <div class="p-6 flex flex-col flex-grow relative">
                                     <div class="text-primary text-xl font-bold mb-3 absolute -top-10 right-6 glass-panel px-3 py-1 rounded-md ghost-border shadow-lg">₽<?php echo number_format($rel['price'], 0, '', ' '); ?></div>

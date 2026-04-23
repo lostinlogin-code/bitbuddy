@@ -42,15 +42,15 @@ void main(){
   vec3 darkBase=mix(vec3(.08),col,min(time*.1,1.));
   darkBase=clamp(darkBase,.08,1.);
 
-  // Light mode: white background, smoke adds subtle blue tint
+  // Light mode: white background, smoke adds a clearly visible blue tint
   // smokeMask near 0 = lots of smoke, near 1 = clear
   float smokeMask = dot(col, vec3(0.21, 0.71, 0.07));
-  // Усиливаем контраст — smoke tint более насыщенный, но фон остаётся светлым
-  float smokeStrength = pow(1.0 - smokeMask, 1.8);
+  // Push contrast further so the smoke reads without making the page heavy
+  float smokeStrength = pow(1.0 - smokeMask, 1.4);
   vec3 lightBase = mix(
-    vec3(0.72, 0.88, 1.0),
     vec3(1.0, 1.0, 1.0),
-    smokeStrength * 0.75
+    vec3(0.45, 0.74, 1.0),
+    smokeStrength * 0.55
   );
   lightBase = clamp(lightBase, 0.0, 1.0);
 
@@ -62,7 +62,7 @@ void main(){
     const vertices = [-1, 1, -1, -1, 1, 1, 1, -1];
 
     const darkColor = [0.412, 0.855, 1.0];
-    const lightColor = [0.3, 0.75, 1.0];
+    const lightColor = [0.18, 0.62, 1.0];
     let smokeColor = darkColor;
     let isLight = false;
     let canvas = null;

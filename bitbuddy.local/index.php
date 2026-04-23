@@ -106,7 +106,7 @@ $active_page   = 'home';
                     <p class="text-on-surface-variant text-lg">Доверие, подкреплённое результатами.</p>
                 </div>
                 <div class="w-full md:w-2/3 flex flex-col space-y-8 relative">
-                    <div class="card-animate glass-panel p-8 rounded-2xl bg-surface-container-highest shadow-card transform md:-translate-x-8 z-20">
+                    <div class="card-animate glass-panel p-8 rounded-2xl shadow-card transform md:-translate-x-8 z-20">
                         <div class="flex text-primary mb-4">
                             <?php for ($i = 0; $i < 5; $i++): ?><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><?php endfor; ?>
                         </div>
@@ -121,7 +121,7 @@ $active_page   = 'home';
                             </div>
                         </div>
                     </div>
-                    <div class="card-animate glass-panel p-8 rounded-2xl bg-surface-container-highest shadow-card transform md:translate-x-12 z-10">
+                    <div class="card-animate glass-panel p-8 rounded-2xl shadow-card transform md:translate-x-12 z-10">
                         <div class="flex text-primary mb-4">
                             <?php for ($i = 0; $i < 5; $i++): ?><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><?php endfor; ?>
                         </div>

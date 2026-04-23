@@ -11,10 +11,16 @@ $is_logged_in = $is_logged_in ?? (isset($_SESSION['user_id']));
 $username     = $username     ?? ($_SESSION['username'] ?? '');
 
 function bb_nav_link_classes(?string $current, ?string $self): string {
+    // Always reserve the same space: font-semibold + underline via ::after so active state
+    // never shifts layout. Inactive links keep the same width by also being font-semibold
+    // and by using an invisible bottom underline slot.
+    $base = 'relative font-semibold pb-1 transition-colors duration-300'
+          . " after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-0"
+          . ' after:h-[2px] after:rounded-full after:transition-all after:duration-300';
     if ($current !== null && $current === $self) {
-        return 'text-primary font-semibold border-b-2 border-primary pb-1 transition-colors duration-300';
+        return $base . ' text-primary after:bg-primary';
     }
-    return 'text-on-surface-variant hover:text-on-surface transition-colors duration-300';
+    return $base . ' text-on-surface-variant hover:text-on-surface after:bg-transparent hover:after:bg-on-surface/30';
 }
 ?>
 <nav id="top-nav" class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-[25px] border-b border-outline-variant/15 shadow-nav font-body tracking-tight antialiased transition-all duration-300">

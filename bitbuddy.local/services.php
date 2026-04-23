@@ -65,32 +65,61 @@ $active_page = 'services';
                 'it-support'   => 'text-tertiary-dim  bg-tertiary-dim/10  border-tertiary-dim/20',
                 'video'        => 'text-primary    bg-primary/10    border-primary/20',
             ];
+            // Fallback images by slug so cards still look meaningful if DB image_url is NULL.
+            $cat_fallback_img = [
+                'design'       => 'https://images.unsplash.com/photo-1561070791-2526d30994b8?auto=format&fit=crop&w=800&q=70',
+                'development'  => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=70',
+                'it-support'   => 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=70',
+                'video'        => 'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=800&q=70',
+            ];
             foreach ($services as $svc):
-                $icon  = $cat_icons[$svc['category_slug']]  ?? 'design_services';
+                $icon   = $cat_icons[$svc['category_slug']]  ?? 'design_services';
                 $accent = $cat_accent[$svc['category_slug']] ?? $cat_accent['design'];
+                $img    = !empty($svc['image_url']) ? $svc['image_url'] : ($cat_fallback_img[$svc['category_slug']] ?? null);
             ?>
-                <article class="service-card card-animate group relative flex flex-col p-8 rounded-2xl glass-panel hover:shadow-glow-primary hover:-translate-y-1 transition-all duration-500 ease-out min-h-[400px]" data-category="<?php echo htmlspecialchars($svc['category_slug']); ?>">
-                    <?php if (!empty($svc['is_popular'])): ?>
-                        <div class="absolute top-6 right-6 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-1.5 shadow-glow-primary">
-                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            <span class="text-xs font-semibold text-primary uppercase tracking-wider">Популярное</span>
+                <article class="service-card card-animate group relative flex flex-col rounded-2xl glass-panel overflow-hidden hover:shadow-glow-primary hover:-translate-y-1 transition-all duration-500 ease-out min-h-[440px]" data-category="<?php echo htmlspecialchars($svc['category_slug']); ?>">
+                    <?php if ($img !== null): ?>
+                        <div class="relative h-40 w-full overflow-hidden">
+                            <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($svc['title']); ?>" loading="lazy"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-surface/85 via-surface/20 to-transparent"></div>
+                            <div class="absolute bottom-3 left-4 flex items-center gap-2">
+                                <span class="w-9 h-9 rounded-full flex items-center justify-center border <?php echo $accent; ?> backdrop-blur-[10px]">
+                                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;"><?php echo $icon; ?></span>
+                                </span>
+                            </div>
+                            <?php if (!empty($svc['is_popular'])): ?>
+                                <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 flex items-center gap-1.5 shadow-glow-primary backdrop-blur-[10px]">
+                                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    <span class="text-xs font-semibold text-primary uppercase tracking-wider">Популярное</span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <?php if (!empty($svc['is_popular'])): ?>
+                            <div class="absolute top-6 right-6 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-1.5 shadow-glow-primary">
+                                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                <span class="text-xs font-semibold text-primary uppercase tracking-wider">Популярное</span>
+                            </div>
+                        <?php endif; ?>
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mb-8 mt-8 ml-8 border <?php echo $accent; ?> group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;"><?php echo $icon; ?></span>
                         </div>
                     <?php endif; ?>
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-8 border <?php echo $accent; ?> group-hover:scale-110 transition-transform duration-300">
-                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;"><?php echo $icon; ?></span>
-                    </div>
-                    <h3 class="text-2xl font-headline font-bold text-on-surface mb-3 tracking-tight"><?php echo htmlspecialchars($svc['title']); ?></h3>
-                    <p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
-                        <?php echo htmlspecialchars($svc['description']); ?>
-                    </p>
-                    <div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/20">
-                        <div class="flex flex-col">
-                            <span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1"><?php echo $svc['price_label'] ?? 'От'; ?></span>
-                            <span class="text-2xl font-headline font-bold text-primary">₽<?php echo number_format($svc['price'], 0, '', ' '); ?></span>
+                    <div class="flex flex-col flex-grow p-8 pt-6">
+                        <h3 class="text-2xl font-headline font-bold text-on-surface mb-3 tracking-tight"><?php echo htmlspecialchars($svc['title']); ?></h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                            <?php echo htmlspecialchars($svc['description']); ?>
+                        </p>
+                        <div class="flex items-end justify-between mt-auto pt-6 border-t border-outline-variant/20">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-on-surface-variant uppercase tracking-wider mb-1"><?php echo $svc['price_label'] ?? 'От'; ?></span>
+                                <span class="text-2xl font-headline font-bold text-primary">₽<?php echo number_format($svc['price'], 0, '', ' '); ?></span>
+                            </div>
+                            <a href="service.php?id=<?php echo $svc['id']; ?>" class="px-5 py-2.5 rounded-full bg-surface-variant/60 backdrop-blur-md text-on-surface text-sm font-medium border border-outline-variant/20 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300">
+                                Подробнее
+                            </a>
                         </div>
-                        <a href="service.php?id=<?php echo $svc['id']; ?>" class="px-5 py-2.5 rounded-full bg-surface-variant/60 backdrop-blur-md text-on-surface text-sm font-medium border border-outline-variant/20 hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-300">
-                            Подробнее
-                        </a>
                     </div>
                 </article>
             <?php endforeach; ?>

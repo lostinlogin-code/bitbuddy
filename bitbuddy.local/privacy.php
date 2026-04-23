@@ -5,7 +5,7 @@ $is_logged_in = isset($_SESSION['user_id']);
 $username     = $_SESSION['username'] ?? '';
 
 $page_title  = 'BitBuddy — Политика конфиденциальности';
-$active_page = null;
+$active_page = 'privacy';
 ?><!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>

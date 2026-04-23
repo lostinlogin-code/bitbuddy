@@ -11,48 +11,65 @@ $username = $_SESSION['username'];
 $flash    = $_SESSION['admin_flash'] ?? null;
 unset($_SESSION['admin_flash']);
 
-/* ---------- actions ---------- */
-
-// Mark single message as read
-if (isset($_GET['read']) && is_numeric($_GET['read'])) {
-    $stmt = $pdo->prepare('UPDATE contact_messages SET is_read = 1 WHERE id = ?');
-    $stmt->execute([(int)$_GET['read']]);
-    $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Сообщение отмечено прочитанным'];
-    header('Location: admin.php#messages');
-    exit;
+// CSRF token (one per session, rotates only on logout via session_destroy)
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
+$csrf = $_SESSION['csrf_token'];
 
-// Mark all messages as read
-if (isset($_GET['mark_all'])) {
-    $pdo->query('UPDATE contact_messages SET is_read = 1 WHERE is_read = 0');
-    $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Все сообщения отмечены прочитанными'];
-    header('Location: admin.php#messages');
-    exit;
-}
+/* ---------- actions (POST-only, CSRF-protected) ---------- */
 
-// Delete message
-if (isset($_GET['delete_msg']) && is_numeric($_GET['delete_msg'])) {
-    $stmt = $pdo->prepare('DELETE FROM contact_messages WHERE id = ?');
-    $stmt->execute([(int)$_GET['delete_msg']]);
-    $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Сообщение удалено'];
-    header('Location: admin.php#messages');
-    exit;
-}
-
-// Update order status
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['new_status'])) {
-    $valid = ['pending', 'active', 'completed', 'cancelled'];
-    $new   = $_POST['new_status'];
-    $oid   = (int)$_POST['order_id'];
-    if (in_array($new, $valid, true) && $oid > 0) {
-        $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?');
-        $stmt->execute([$new, $oid]);
-        $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Статус заказа обновлён'];
-    } else {
-        $_SESSION['admin_flash'] = ['type' => 'err', 'text' => 'Некорректный статус'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $token = $_POST['csrf_token'] ?? '';
+    if (!is_string($token) || !hash_equals($csrf, $token)) {
+        $_SESSION['admin_flash'] = ['type' => 'err', 'text' => 'Сессия устарела, обновите страницу и попробуйте снова'];
+        header('Location: admin.php');
+        exit;
     }
-    header('Location: admin.php#orders');
-    exit;
+
+    $action = $_POST['action'] ?? '';
+
+    // Mark single message as read
+    if ($action === 'read_msg' && isset($_POST['msg_id']) && is_numeric($_POST['msg_id'])) {
+        $stmt = $pdo->prepare('UPDATE contact_messages SET is_read = 1 WHERE id = ?');
+        $stmt->execute([(int)$_POST['msg_id']]);
+        $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Сообщение отмечено прочитанным'];
+        header('Location: admin.php#messages');
+        exit;
+    }
+
+    // Mark all messages as read
+    if ($action === 'mark_all') {
+        $pdo->query('UPDATE contact_messages SET is_read = 1 WHERE is_read = 0');
+        $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Все сообщения отмечены прочитанными'];
+        header('Location: admin.php#messages');
+        exit;
+    }
+
+    // Delete message
+    if ($action === 'delete_msg' && isset($_POST['msg_id']) && is_numeric($_POST['msg_id'])) {
+        $stmt = $pdo->prepare('DELETE FROM contact_messages WHERE id = ?');
+        $stmt->execute([(int)$_POST['msg_id']]);
+        $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Сообщение удалено'];
+        header('Location: admin.php#messages');
+        exit;
+    }
+
+    // Update order status
+    if ($action === 'update_status' && isset($_POST['order_id'], $_POST['new_status'])) {
+        $valid = ['pending', 'active', 'completed', 'cancelled'];
+        $new   = $_POST['new_status'];
+        $oid   = (int)$_POST['order_id'];
+        if (in_array($new, $valid, true) && $oid > 0) {
+            $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?');
+            $stmt->execute([$new, $oid]);
+            $_SESSION['admin_flash'] = ['type' => 'ok', 'text' => 'Статус заказа обновлён'];
+        } else {
+            $_SESSION['admin_flash'] = ['type' => 'err', 'text' => 'Некорректный статус'];
+        }
+        header('Location: admin.php#orders');
+        exit;
+    }
 }
 
 /* ---------- data ---------- */
@@ -188,6 +205,8 @@ $active_page = null;
                                     <td class="py-3 px-2 text-on-surface font-semibold">₽<?php echo number_format($o['price'], 0, '', ' '); ?></td>
                                     <td class="py-3 px-2">
                                         <form method="POST" action="admin.php" class="flex items-center gap-2">
+                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
+                                            <input type="hidden" name="action" value="update_status"/>
                                             <input type="hidden" name="order_id" value="<?php echo (int)$o['id']; ?>"/>
                                             <span class="px-2 py-1 rounded-full text-xs font-medium border <?php echo $sc; ?>"><?php echo $sn; ?></span>
                                             <select name="new_status" onchange="this.form.submit()"
@@ -218,10 +237,14 @@ $active_page = null;
                     <?php endif; ?>
                 </h2>
                 <?php if ($msg_count > 0): ?>
-                    <a href="admin.php?mark_all=1#messages"
-                       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/25 text-primary hover:bg-primary/20 transition-all text-sm">
-                        <span class="material-symbols-outlined text-base">done_all</span>Отметить все
-                    </a>
+                    <form method="POST" action="admin.php#messages" class="inline-flex">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
+                        <input type="hidden" name="action" value="mark_all"/>
+                        <button type="submit"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/25 text-primary hover:bg-primary/20 transition-all text-sm">
+                            <span class="material-symbols-outlined text-base">done_all</span>Отметить все
+                        </button>
+                    </form>
                 <?php endif; ?>
             </div>
 
@@ -245,16 +268,26 @@ $active_page = null;
                                 </div>
                                 <div class="flex flex-col gap-2 shrink-0">
                                     <?php if (!$m['is_read']): ?>
-                                        <a href="admin.php?read=<?php echo (int)$m['id']; ?>#messages"
-                                           class="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium border border-primary/25 hover:bg-primary/20 transition-colors inline-flex items-center gap-1">
-                                            <span class="material-symbols-outlined text-sm">done</span>Прочитать
-                                        </a>
+                                        <form method="POST" action="admin.php#messages">
+                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
+                                            <input type="hidden" name="action" value="read_msg"/>
+                                            <input type="hidden" name="msg_id" value="<?php echo (int)$m['id']; ?>"/>
+                                            <button type="submit"
+                                                    class="w-full px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium border border-primary/25 hover:bg-primary/20 transition-colors inline-flex items-center justify-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">done</span>Прочитать
+                                            </button>
+                                        </form>
                                     <?php endif; ?>
-                                    <a href="admin.php?delete_msg=<?php echo (int)$m['id']; ?>#messages"
-                                       onclick="return confirm('Удалить сообщение?')"
-                                       class="px-3 py-1.5 rounded-lg bg-error/10 text-error text-xs font-medium border border-error/25 hover:bg-error/20 transition-colors inline-flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">delete</span>Удалить
-                                    </a>
+                                    <form method="POST" action="admin.php#messages"
+                                          onsubmit="return confirm('Удалить сообщение?')">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
+                                        <input type="hidden" name="action" value="delete_msg"/>
+                                        <input type="hidden" name="msg_id" value="<?php echo (int)$m['id']; ?>"/>
+                                        <button type="submit"
+                                                class="w-full px-3 py-1.5 rounded-lg bg-error/10 text-error text-xs font-medium border border-error/25 hover:bg-error/20 transition-colors inline-flex items-center justify-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">delete</span>Удалить
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

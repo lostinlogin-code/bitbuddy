@@ -10,8 +10,8 @@ $active_page  = $active_page  ?? null;
 $is_logged_in = $is_logged_in ?? (isset($_SESSION['user_id']));
 $username     = $username     ?? ($_SESSION['username'] ?? '');
 
-function bb_nav_link_classes(string $current, string $self): string {
-    if ($current === $self) {
+function bb_nav_link_classes(?string $current, ?string $self): string {
+    if ($current !== null && $current === $self) {
         return 'text-primary font-semibold border-b-2 border-primary pb-1 transition-colors duration-300';
     }
     return 'text-on-surface-variant hover:text-on-surface transition-colors duration-300';

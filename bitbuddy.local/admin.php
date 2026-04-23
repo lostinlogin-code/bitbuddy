@@ -271,7 +271,7 @@ $active_page = null;
                                     </td>
                                     <td class="py-3 px-2 text-on-surface-variant text-xs whitespace-nowrap"><?php echo date('d.m.Y H:i', strtotime($o['created_at'])); ?></td>
                                     <td class="py-3 px-2 text-right">
-                                        <form method="POST" action="admin.php#orders" onsubmit="return confirm('Удалить заказ <?php echo htmlspecialchars($o['order_code']); ?>?')" class="inline-flex">
+                                        <form method="POST" action="admin.php#orders" data-confirm="<?php echo htmlspecialchars('Удалить заказ ' . $o['order_code'] . '?'); ?>" class="inline-flex">
                                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
                                             <input type="hidden" name="action" value="delete_order"/>
                                             <input type="hidden" name="order_id" value="<?php echo (int)$o['id']; ?>"/>
@@ -347,7 +347,7 @@ $active_page = null;
                                                     <?php echo $is_admin ? 'Снять админа' : 'Сделать админом'; ?>
                                                 </button>
                                             </form>
-                                            <form method="POST" action="admin.php#users" onsubmit="return confirm('Удалить пользователя <?php echo htmlspecialchars($u['username']); ?>? Все его заказы тоже будут удалены.')" class="inline-flex">
+                                            <form method="POST" action="admin.php#users" data-confirm="<?php echo htmlspecialchars('Удалить пользователя ' . $u['username'] . '? Все его заказы тоже будут удалены.'); ?>" class="inline-flex">
                                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
                                                 <input type="hidden" name="action" value="delete_user"/>
                                                 <input type="hidden" name="target_user_id" value="<?php echo (int)$u['id']; ?>"/>
@@ -419,7 +419,7 @@ $active_page = null;
                                         </form>
                                     <?php endif; ?>
                                     <form method="POST" action="admin.php#messages"
-                                          onsubmit="return confirm('Удалить сообщение?')">
+                                          data-confirm="Удалить сообщение?">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
                                         <input type="hidden" name="action" value="delete_msg"/>
                                         <input type="hidden" name="msg_id" value="<?php echo (int)$m['id']; ?>"/>

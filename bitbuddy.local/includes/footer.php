@@ -26,3 +26,19 @@ function bb_footer_link_classes(?string $current, ?string $self): string {
         </nav>
     </div>
 </footer>
+
+<script>
+// Safe confirmation for destructive forms: any <form data-confirm="...">
+// prompts with the attribute value read via dataset (HTML-entity-decoded once
+// by the browser, then treated as plain text — no JS context injection).
+(function(){
+    document.addEventListener('submit', function(ev){
+        var form = ev.target;
+        if (!(form instanceof HTMLFormElement)) return;
+        var msg = form.dataset ? form.dataset.confirm : null;
+        if (msg && !window.confirm(msg)) {
+            ev.preventDefault();
+        }
+    }, true);
+})();
+</script>

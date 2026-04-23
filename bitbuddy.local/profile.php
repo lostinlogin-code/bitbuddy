@@ -270,7 +270,7 @@ $active_page = 'profile';
                                         <td class="px-6 py-5 text-sm text-on-surface-variant whitespace-nowrap"><?php echo date('d.m.Y', strtotime($order['created_at'])); ?></td>
                                         <td class="px-6 py-5 text-right">
                                             <?php if ($order['status'] === 'pending'): ?>
-                                                <form method="POST" action="profile.php#orders" onsubmit="return confirm('Отменить заказ <?php echo htmlspecialchars($order['order_code']); ?>?');" class="inline-flex">
+                                                <form method="POST" action="profile.php#orders" data-confirm="<?php echo htmlspecialchars('Отменить заказ ' . $order['order_code'] . '?'); ?>" class="inline-flex">
                                                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf); ?>"/>
                                                     <input type="hidden" name="action" value="cancel_order"/>
                                                     <input type="hidden" name="order_id" value="<?php echo (int)$order['id']; ?>"/>

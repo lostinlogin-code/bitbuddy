@@ -1,243 +1,199 @@
 /**
- * BitBuddy Theme Manager
- * Handles theme switching via data-theme attribute with localStorage persistence
+ * BitBuddy — Theme Manager
+ * Handles theme switching via [data-theme] with localStorage persistence
+ * and a View-Transitions API fade when supported.
  */
-
-(function() {
+(function () {
     'use strict';
 
-    const THEME_KEY = 'bitbuddy-theme';
-    const THEME_ATTRIBUTE = 'data-theme';
-    const DARK_THEME = 'dark';
-    const LIGHT_THEME = 'light';
+    var THEME_KEY = 'bitbuddy-theme';
+    var ATTR = 'data-theme';
+    var DARK = 'dark';
+    var LIGHT = 'light';
 
-    /**
-     * Get initial theme based on localStorage or system preference
-     */
-    function getInitialTheme() {
-        // Check localStorage first
-        const savedTheme = localStorage.getItem(THEME_KEY);
-        if (savedTheme && (savedTheme === DARK_THEME || savedTheme === LIGHT_THEME)) {
-            return savedTheme;
-        }
-
-        // Check system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            return LIGHT_THEME;
-        }
-
-        // Default to dark
-        return DARK_THEME;
+    function getSaved() {
+        try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
     }
 
-    /**
-     * Apply theme to document
-     */
-    function applyTheme(theme) {
-        document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
+    function saveTheme(t) {
+        try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* ignore */ }
+    }
+
+    function updateIcons(theme) {
+        var icons = document.querySelectorAll('[data-theme-icon]');
+        icons.forEach(function (icon) {
+            icon.textContent = theme === DARK ? 'dark_mode' : 'light_mode';
+        });
+    }
+
+    function apply(theme) {
+        document.documentElement.setAttribute(ATTR, theme);
         document.documentElement.style.colorScheme = theme;
-        document.body?.setAttribute(THEME_ATTRIBUTE, theme);
-        
-        // Update icon if exists
-        updateThemeIcon(theme);
+        if (document.body) document.body.setAttribute(ATTR, theme);
+        updateIcons(theme);
     }
 
-    /**
-     * Update theme toggle icon based on current theme
-     */
-    function updateThemeIcon(theme) {
-        const icons = document.querySelectorAll('[data-theme-icon]');
-        icons.forEach(icon => {
-            icon.textContent = theme === DARK_THEME ? 'dark_mode' : 'light_mode';
-            icon.setAttribute('data-icon', theme === DARK_THEME ? 'dark_mode' : 'light_mode');
-        });
+    function current() {
+        return document.documentElement.getAttribute(ATTR) || DARK;
     }
 
-    /**
-     * Toggle between dark and light themes
-     */
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute(THEME_ATTRIBUTE) || DARK_THEME;
-        const newTheme = currentTheme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
-        
-        applyTheme(newTheme);
-        localStorage.setItem(THEME_KEY, newTheme);
-        
-        // Dispatch custom event for other components
-        window.dispatchEvent(new CustomEvent('themechange', { 
-            detail: { theme: newTheme, previousTheme: currentTheme } 
-        }));
+    function toggle() {
+        var next = current() === DARK ? LIGHT : DARK;
+        set(next);
     }
 
-    /**
-     * Set specific theme
-     */
-    function setTheme(theme) {
-        if (theme !== DARK_THEME && theme !== LIGHT_THEME) {
-            console.warn('Invalid theme:', theme);
-            return;
+    function set(theme) {
+        if (theme !== DARK && theme !== LIGHT) return;
+        saveTheme(theme);
+
+        // Use View Transitions API when available for a smooth cross-fade.
+        if (document.startViewTransition) {
+            document.startViewTransition(function () { apply(theme); });
+        } else {
+            apply(theme);
         }
-        applyTheme(theme);
-        localStorage.setItem(THEME_KEY, theme);
+
+        window.dispatchEvent(new CustomEvent('bitbuddy:themechange', { detail: { theme: theme } }));
     }
 
-    /**
-     * Get current theme
-     */
-    function getCurrentTheme() {
-        return document.documentElement.getAttribute(THEME_ATTRIBUTE) || DARK_THEME;
+    // Initial application (redundant with inline head script but keeps icons in sync)
+    function init() {
+        var saved = getSaved();
+        var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = saved || (prefersLight ? LIGHT : DARK);
+        apply(theme);
     }
 
-    /**
-     * Initialize theme on page load
-     */
-    function initTheme() {
-        const theme = getInitialTheme();
-        applyTheme(theme);
-    }
-
-    // Initialize immediately to prevent flash
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTheme);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initTheme();
+        init();
     }
 
-    // Also run on load to be safe
-    window.addEventListener('load', initTheme);
-
-    // Listen for system theme changes
+    // Follow system-level changes when user hasn't explicitly chosen a theme
     if (window.matchMedia) {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-        mediaQuery.addEventListener('change', (e) => {
-            // Only apply if user hasn't manually set a preference
-            if (!localStorage.getItem(THEME_KEY)) {
-                const newTheme = e.matches ? LIGHT_THEME : DARK_THEME;
-                applyTheme(newTheme);
-            }
-        });
+        var mq = window.matchMedia('(prefers-color-scheme: light)');
+        var listener = function (e) {
+            if (!getSaved()) apply(e.matches ? LIGHT : DARK);
+        };
+        if (mq.addEventListener) mq.addEventListener('change', listener);
+        else if (mq.addListener) mq.addListener(listener);
     }
 
-    // Expose API globally
-    window.ThemeManager = {
-        toggle: toggleTheme,
-        set: setTheme,
-        get: getCurrentTheme,
-        DARK: DARK_THEME,
-        LIGHT: LIGHT_THEME
-    };
-
+    window.ThemeManager = { toggle: toggle, set: set, get: current, DARK: DARK, LIGHT: LIGHT };
 })();
 
+
 /**
- * BitBuddy Mobile Menu Manager
+ * BitBuddy — Mobile menu
  */
-(function() {
+(function () {
     'use strict';
 
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        const overlay = document.getElementById('mobile-overlay');
+    function toggleMenu() {
+        var menu = document.getElementById('mobile-menu');
+        var overlay = document.getElementById('mobile-overlay');
         if (!menu) return;
-
-        const isOpen = !menu.classList.contains('translate-x-full');
-        if (isOpen) {
-            menu.classList.add('translate-x-full');
-            overlay?.classList.add('hidden');
-            document.body.style.overflow = '';
-        } else {
+        var isOpen = !menu.classList.contains('translate-x-full');
+        if (isOpen) close();
+        else {
             menu.classList.remove('translate-x-full');
-            overlay?.classList.remove('hidden');
+            if (overlay) overlay.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
     }
 
-    function closeMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        const overlay = document.getElementById('mobile-overlay');
+    function close() {
+        var menu = document.getElementById('mobile-menu');
+        var overlay = document.getElementById('mobile-overlay');
         if (menu) menu.classList.add('translate-x-full');
-        overlay?.classList.add('hidden');
+        if (overlay) overlay.classList.add('hidden');
         document.body.style.overflow = '';
     }
 
-    // Close on resize to desktop
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768) closeMobileMenu();
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 768) close();
     });
 
-    window.MobileMenu = {
-        toggle: toggleMobileMenu,
-        close: closeMobileMenu
-    };
+    window.MobileMenu = { toggle: toggleMenu, close: close };
 })();
 
+
 /**
- * BitBuddy Scroll Animations & Counter
+ * BitBuddy — Scroll behaviour (nav state + reveal animations + counters)
  */
-(function() {
+(function () {
     'use strict';
 
-    // Counter animation for stat values
-    function animateCounter(el) {
-        const target = parseFloat(el.dataset.target);
-        const suffix = el.dataset.suffix || '';
-        const decimal = parseInt(el.dataset.decimal) || 0;
-        const prefix = el.dataset.prefix || '';
-        const duration = 1500;
-        const start = performance.now();
-
-        function update(now) {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const current = target * eased;
-
-            if (decimal > 0) {
-                el.textContent = prefix + current.toFixed(decimal) + suffix;
-            } else {
-                el.textContent = prefix + Math.floor(current) + (target >= 100 ? '+' : suffix);
+    function bindNavScroll() {
+        var nav = document.getElementById('top-nav');
+        if (!nav) return;
+        var last = -1;
+        var update = function () {
+            var s = window.scrollY > 8;
+            if (s !== last) {
+                nav.classList.toggle('is-scrolled', s);
+                last = s;
             }
-
-            if (progress < 1) {
-                requestAnimationFrame(update);
-            } else {
-                if (decimal > 0) {
-                    el.textContent = prefix + target.toFixed(decimal) + suffix;
-                } else {
-                    el.textContent = prefix + target + (target >= 100 ? '+' : suffix);
-                }
-            }
-        }
-
-        requestAnimationFrame(update);
+        };
+        update();
+        window.addEventListener('scroll', update, { passive: true });
     }
 
-    // Intersection Observer for scroll animations
-    function initScrollAnimations() {
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    // Counter animation
-                    if (entry.target.classList.contains('stat-value')) {
-                        animateCounter(entry.target);
-                    }
-                    // Card entrance
-                    if (entry.target.classList.contains('card-animate')) {
-                        entry.target.classList.add('visible');
-                    }
-                    observer.unobserve(entry.target);
-                }
+    function animateCounter(el) {
+        var target = parseFloat(el.dataset.target);
+        if (!isFinite(target)) return;
+        var suffix = el.dataset.suffix || '';
+        var decimal = parseInt(el.dataset.decimal, 10) || 0;
+        var prefix = el.dataset.prefix || '';
+        var duration = 1500;
+        var start = performance.now();
+
+        function frame(now) {
+            var progress = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var value = target * eased;
+            if (decimal > 0) {
+                el.textContent = prefix + value.toFixed(decimal) + suffix;
+            } else {
+                el.textContent = prefix + Math.floor(value) + (target >= 100 ? '+' : suffix);
+            }
+            if (progress < 1) requestAnimationFrame(frame);
+            else {
+                el.textContent = decimal > 0
+                    ? prefix + target.toFixed(decimal) + suffix
+                    : prefix + target + (target >= 100 ? '+' : suffix);
+            }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    function bindScrollAnimations() {
+        if (!('IntersectionObserver' in window)) {
+            document.querySelectorAll('.card-animate').forEach(function (el) { el.classList.add('visible'); });
+            document.querySelectorAll('.stat-value').forEach(animateCounter);
+            return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                if (entry.target.classList.contains('stat-value')) animateCounter(entry.target);
+                if (entry.target.classList.contains('card-animate')) entry.target.classList.add('visible');
+                io.unobserve(entry.target);
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.stat-value, .card-animate').forEach(function(el) {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.stat-value, .card-animate').forEach(function (el) { io.observe(el); });
+    }
+
+    function init() {
+        bindNavScroll();
+        bindScrollAnimations();
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initScrollAnimations();
+        init();
     }
 })();

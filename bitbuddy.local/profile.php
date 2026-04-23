@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $current = (string)($_POST['current_password'] ?? '');
         $new     = (string)($_POST['new_password']     ?? '');
         $confirm = (string)($_POST['confirm_password'] ?? '');
-        if ($new === '' || strlen($new) < 8) {
+        if ($new === '' || mb_strlen($new, 'UTF-8') < 8) {
             $_SESSION['profile_flash'] = ['type' => 'err', 'text' => 'Новый пароль должен быть не короче 8 символов'];
         } elseif ($new !== $confirm) {
             $_SESSION['profile_flash'] = ['type' => 'err', 'text' => 'Пароли не совпадают'];

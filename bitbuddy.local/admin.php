@@ -121,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $user_count    = (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
 $order_count   = (int)$pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
 $msg_count     = (int)$pdo->query('SELECT COUNT(*) FROM contact_messages WHERE is_read = 0')->fetchColumn();
-$service_count = (int)$pdo->query('SELECT COUNT(*) FROM services')->fetchColumn();
 $revenue_total = (float)$pdo->query("SELECT COALESCE(SUM(price),0) FROM orders WHERE status <> 'cancelled'")->fetchColumn();
 $users_list    = $pdo->query(
     'SELECT u.id, u.username, u.email, u.role, u.created_at,

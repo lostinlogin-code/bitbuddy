@@ -17,10 +17,12 @@ $bb_nav_items = [
 ];
 ?>
 <nav id="top-nav" class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-[25px] border-b border-outline-variant/15 shadow-nav font-body tracking-tight antialiased transition-all duration-300">
-    <div class="flex justify-between items-center px-6 md:px-8 h-20 w-full max-w-none">
+    <div class="relative flex items-center px-6 md:px-8 h-20 w-full max-w-none">
         <a class="text-2xl font-extrabold tracking-tighter text-on-surface hover:text-primary transition-colors duration-300" href="index.php">BitBuddy</a>
 
-        <div id="bb-nav-group" class="relative hidden md:flex items-center gap-10" data-active="<?php echo htmlspecialchars($active_page ?? ''); ?>">
+        <!-- Absolutely centered so the logo / profile button widths on the
+             sides can never shift the nav links horizontally. -->
+        <div id="bb-nav-group" class="hidden md:flex items-center gap-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-active="<?php echo htmlspecialchars($active_page ?? ''); ?>">
             <?php foreach ($bb_nav_items as $item):
                 $is_active = ($active_page !== null && $active_page === $item['key']);
             ?>
@@ -34,7 +36,7 @@ $bb_nav_items = [
                   style="left:0;width:0;opacity:0;"></span>
         </div>
 
-        <div class="flex items-center gap-4 md:gap-6">
+        <div class="flex items-center gap-4 md:gap-6 ml-auto">
             <button type="button" onclick="ThemeManager.toggle()" aria-label="Переключить тему"
                     class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-on-surface/5 transition-all duration-300 active:scale-90">
                 <span class="material-symbols-outlined" data-theme-icon style="font-variation-settings: 'FILL' 1;">dark_mode</span>

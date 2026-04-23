@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'db_connect.php';
+require_once __DIR__ . '/includes/service_images.php';
 
 $is_logged_in = isset($_SESSION['user_id']);
 $username = $_SESSION['username'] ?? '';
@@ -65,23 +66,18 @@ $active_page = 'services';
                 'it-support'   => 'text-tertiary-dim  bg-tertiary-dim/10  border-tertiary-dim/20',
                 'video'        => 'text-primary    bg-primary/10    border-primary/20',
             ];
-            // Fallback images by slug so cards still look meaningful if DB image_url is NULL.
-            $cat_fallback_img = [
-                'design'       => 'https://images.unsplash.com/photo-1561070791-2526d30994b8?auto=format&fit=crop&w=800&q=70',
-                'development'  => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=70',
-                'it-support'   => 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=70',
-                'video'        => 'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=800&q=70',
-            ];
             foreach ($services as $svc):
                 $icon   = $cat_icons[$svc['category_slug']]  ?? 'design_services';
                 $accent = $cat_accent[$svc['category_slug']] ?? $cat_accent['design'];
-                $img    = !empty($svc['image_url']) ? $svc['image_url'] : ($cat_fallback_img[$svc['category_slug']] ?? null);
+                $img    = bb_service_image_url($svc);
             ?>
                 <article class="service-card card-animate group relative flex flex-col rounded-2xl glass-panel overflow-hidden hover:shadow-glow-primary hover:-translate-y-1 transition-all duration-500 ease-out min-h-[440px]" data-category="<?php echo htmlspecialchars($svc['category_slug']); ?>">
                     <?php if ($img !== null): ?>
-                        <div class="relative h-40 w-full overflow-hidden">
+                        <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-primary/15 via-surface to-tertiary-dim/15">
+                            <span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[80px] text-primary/25 pointer-events-none select-none" style="font-variation-settings:'FILL' 1;" aria-hidden="true"><?php echo $icon; ?></span>
                             <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($svc['title']); ?>" loading="lazy"
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                                 onerror="this.style.display='none'"
+                                 class="relative w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
                             <div class="absolute inset-0 bg-gradient-to-t from-surface/85 via-surface/20 to-transparent"></div>
                             <div class="absolute bottom-3 left-4 flex items-center gap-2">
                                 <span class="w-9 h-9 rounded-full flex items-center justify-center border <?php echo $accent; ?> backdrop-blur-[10px]">

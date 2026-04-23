@@ -2,7 +2,7 @@
 /**
  * Shared top navigation + mobile menu.
  * Caller may set before including:
- *   $active_page  — one of 'home' | 'services' | 'contacts' | 'profile' | null
+ *   $active_page  — one of 'home' | 'services' | 'contacts' | 'profile' | 'privacy' | null
  *   $is_logged_in — bool
  *   $username     — string
  */
@@ -10,27 +10,28 @@ $active_page  = $active_page  ?? null;
 $is_logged_in = $is_logged_in ?? (isset($_SESSION['user_id']));
 $username     = $username     ?? ($_SESSION['username'] ?? '');
 
-function bb_nav_link_classes(?string $current, ?string $self): string {
-    // Always reserve the same space: font-semibold + underline via ::after so active state
-    // never shifts layout. Inactive links keep the same width by also being font-semibold
-    // and by using an invisible bottom underline slot.
-    $base = 'relative font-semibold pb-1 transition-colors duration-300'
-          . " after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-0"
-          . ' after:h-[2px] after:rounded-full after:transition-all after:duration-300';
-    if ($current !== null && $current === $self) {
-        return $base . ' text-primary after:bg-primary';
-    }
-    return $base . ' text-on-surface-variant hover:text-on-surface after:bg-transparent hover:after:bg-on-surface/30';
-}
+$bb_nav_items = [
+    ['key' => 'home',     'href' => 'index.php',    'label' => 'О нас'],
+    ['key' => 'services', 'href' => 'services.php', 'label' => 'Услуги'],
+    ['key' => 'contacts', 'href' => 'contacts.php', 'label' => 'Контакты'],
+];
 ?>
 <nav id="top-nav" class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-[25px] border-b border-outline-variant/15 shadow-nav font-body tracking-tight antialiased transition-all duration-300">
     <div class="flex justify-between items-center px-6 md:px-8 h-20 w-full max-w-none">
         <a class="text-2xl font-extrabold tracking-tighter text-on-surface hover:text-primary transition-colors duration-300" href="index.php">BitBuddy</a>
 
-        <div class="hidden md:flex items-center space-x-8">
-            <a class="<?php echo bb_nav_link_classes($active_page, 'home'); ?>" href="index.php">О нас</a>
-            <a class="<?php echo bb_nav_link_classes($active_page, 'services'); ?>" href="services.php">Услуги</a>
-            <a class="<?php echo bb_nav_link_classes($active_page, 'contacts'); ?>" href="contacts.php">Контакты</a>
+        <div id="bb-nav-group" class="relative hidden md:flex items-center gap-10" data-active="<?php echo htmlspecialchars($active_page ?? ''); ?>">
+            <?php foreach ($bb_nav_items as $item):
+                $is_active = ($active_page !== null && $active_page === $item['key']);
+            ?>
+                <a class="bb-nav-link relative font-semibold pb-2 leading-none transition-colors duration-300 <?php echo $is_active ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'; ?>"
+                   data-nav-link="<?php echo htmlspecialchars($item['key']); ?>"
+                   <?php echo $is_active ? 'data-active="true"' : ''; ?>
+                   href="<?php echo htmlspecialchars($item['href']); ?>"><?php echo htmlspecialchars($item['label']); ?></a>
+            <?php endforeach; ?>
+            <span id="bb-nav-indicator"
+                  class="pointer-events-none absolute bottom-0 h-[2px] rounded-full bg-primary transition-[left,width,opacity] duration-300 ease-out"
+                  style="left:0;width:0;opacity:0;"></span>
         </div>
 
         <div class="flex items-center gap-4 md:gap-6">
@@ -54,6 +55,65 @@ function bb_nav_link_classes(?string $current, ?string $self): string {
         </div>
     </div>
 </nav>
+
+<script>
+// Sliding underline indicator: buttons stay stationary, only a single <span>
+// underneath animates its left/width to the active (and hovered) link.
+(function(){
+    function init() {
+        var group = document.getElementById('bb-nav-group');
+        if (!group) return;
+        var indicator = group.querySelector('#bb-nav-indicator');
+        var links = group.querySelectorAll('[data-nav-link]');
+        if (!indicator || !links.length) return;
+
+        var active = group.querySelector('[data-nav-link][data-active="true"]') || null;
+
+        function moveTo(el, animate) {
+            if (!el) {
+                indicator.style.opacity = '0';
+                return;
+            }
+            var groupRect = group.getBoundingClientRect();
+            var rect = el.getBoundingClientRect();
+            var left = rect.left - groupRect.left;
+            var width = rect.width;
+            if (!animate) {
+                var prev = indicator.style.transition;
+                indicator.style.transition = 'none';
+                indicator.style.left = left + 'px';
+                indicator.style.width = width + 'px';
+                indicator.style.opacity = '1';
+                // Force reflow so the next change animates.
+                indicator.offsetWidth;
+                indicator.style.transition = prev;
+            } else {
+                indicator.style.left = left + 'px';
+                indicator.style.width = width + 'px';
+                indicator.style.opacity = '1';
+            }
+        }
+
+        // Initial placement on the active link (if any).
+        moveTo(active, false);
+
+        links.forEach(function(link) {
+            link.addEventListener('mouseenter', function(){ moveTo(link, true); });
+            link.addEventListener('focus',      function(){ moveTo(link, true); });
+        });
+        group.addEventListener('mouseleave', function(){
+            if (active) moveTo(active, true); else indicator.style.opacity = '0';
+        });
+
+        window.addEventListener('resize', function(){ moveTo(active, false); });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
 
 <!-- Mobile Menu Overlay -->
 <div id="mobile-overlay" class="hidden fixed inset-0 bg-inverse-surface/60 backdrop-blur-sm z-[60] md:hidden" onclick="MobileMenu.close()"></div>
